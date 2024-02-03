@@ -42,7 +42,7 @@
         "bn": "int:id",
         "m": "net.minecraft.block.Block[]:BLOCKS",
         "u": "net.minecraft.block.Block:STONE",
-        "v": "net.minecraft.block.Block:GRASS",
+        "v": "net.minecraft.block.GrassBlock:GRASS",
         "w": "net.minecraft.block.Block:DIRT",
         "x": "net.minecraft.block.Block:STONE_BRICK",
         "y": "net.minecraft.block.Block:WOOD",
@@ -160,9 +160,9 @@
     "ru": "net.minecraft.block.TallGrassBlock",
     "jb": "net.minecraft.block.DeadbushBlock",
     "ee": "net.minecraft.block.WoolBlock",
-    "wb": "net.minecraft.block.FlowerBlock",
+    "wb": "net.minecraft.block.BushBlock",
     "tl": "net.minecraft.block.MushroomBlock",
-    "l": "net.minecraft.block.MetalBlock",
+    "l": "net.minecraft.block.IngotBlock",
     "ys": "net.minecraft.block.SlabBlock",
     "ah": "net.minecraft.block.TntBlock",
     "hb": "net.minecraft.block.BookshelfBlock",
@@ -178,6 +178,7 @@
     "vl": "net.minecraft.block.FarmlandBlock",
     "tc": "net.minecraft.block.FurnaceBlock",
     "uj": "net.minecraft.block.SignBlock",
+    "rw": "net.minecraft.block.EntityBlock",
 
     "iz": "net.minecraft.item.ItemStack",
     "gm": {
@@ -322,7 +323,49 @@
     "fd": "net.minecraft.level.Level",
     "ei": "net.minecraft.level.LevelData",
 
+    "kd": {
+      "deobfuscated": "net.minecraft.biome.Biome",
+      "fields": {
+        "p": "byte:surfaceBlock",
+        "q": "byte:groundBlock",
+        "s": "java.util.List:hostileMobs",
+        "t": "java.util.List:passiveMobs",
+        "u": "java.util.List:ambientMobs"
+      }
+    },
+    "yj": "net.minecraft.biome.Jungle",
+    "tf": "net.minecraft.biome.Swamp",
+    "rb": "net.minecraft.biome.Forest",
+    "g": "net.minecraft.biome.Taiga",
+    "fs": "net.minecraft.biome.Plains",
+    "t": "net.minecraft.biome.Nether",
+    "ry": "net.minecraft.biome.Sky",
+    "bj": "net.minecraft.biome.SpawnRate",
+
+    "hk": "net.minecraft.Recipes",
+
+    "gu": "net.minecraft.json.Json",
+    "ja": "net.minecraft.json.JsonNumber",
+    "qa": "net.minecraft.json.JsonString",
+    "kr": "net.minecraft.json.JsonObject",
+    "oe": "net.minecraft.json.JsonArray",
+
     "ko": "net.minecraft.client.model.Model",
-    "il": "net.minecraft.client.model.CreeperModel"
+    "il": "net.minecraft.client.model.CreeperModel",
+
+    "bw": "net.minecraft.client.renderer.EntityRenderer",
+    "th": "net.minecraft.client.renderer.EntityRenderers",
+    "m": "net.minecraft.client.renderer.CreeperRenderer",
+    "mj": "net.minecraft.client.renderer.SlimeRenderer",
+    "pq": "net.minecraft.client.renderer.GhastRenderer",
+    "es": "net.minecraft.client.renderer.SquidRenderer",
+    "ip": "net.minecraft.client.renderer.ChickenRenderer",
+    "me": "net.minecraft.client.renderer.PigRenderer",
+    "va": "net.minecraft.client.renderer.CowRenderer",
+    "we": "net.minecraft.client.renderer.WolfRenderer",
+    "xy": "net.minecraft.client.renderer.SheepRenderer",
+    "yg": "net.minecraft.client.renderer.GiantRenderer",
+    "yx": "net.minecraft.client.renderer.SpiderRenderer",
+    "ds": "net.minecraft.client.renderer.ArmorRenderer"
   }
 }

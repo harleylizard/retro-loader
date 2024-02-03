@@ -9,16 +9,16 @@ import org.gradle.api.tasks.TaskAction;
 import java.io.IOException;
 import java.nio.file.Files;
 
-public class CreateMappingsTask extends DefaultTask {
+public class CreateReobfuscationMappingsTask extends DefaultTask {
     @TaskAction
-    public void createMappings() throws IOException {
+    public void createReobfuscationMappings() throws IOException {
         var cache = RetroLoaderPlugin.getCache(getProject());
-        var path = cache.resolve("mappings.txt");
+        var path = cache.resolve("mappings-reobfuscated.txt");
 
         try (var writer = Files.newBufferedWriter(path)) {
             var mappings = Mappings.deserialize("mappings.json");
 
-            MappingsFormat.PROGUARD.getWriter().write(cache, writer, mappings);
+            MappingsFormat.REOBFUSCATED_TINY.getWriter().write(cache, writer, mappings);
             writer.flush();
         }
     }

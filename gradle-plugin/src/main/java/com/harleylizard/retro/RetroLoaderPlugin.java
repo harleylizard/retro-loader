@@ -51,29 +51,34 @@ public final class RetroLoaderPlugin implements Plugin<Project> {
             deobfuscateMinecraftTask.setGroup(PLUGIN_NAME);
         });
 
-        tasks.register("createObfuscationMappings", CreateObfuscationMappingsTask.class, createObfuscationMappingsTask -> {
-            createObfuscationMappingsTask.setGroup(PLUGIN_NAME);
+        tasks.register("createSources", CreateSourcesTasks.class, createSourcesTasks -> {
+            createSourcesTasks.dependsOn(createMappings);
+            createSourcesTasks.setGroup(PLUGIN_NAME);
         });
 
-        tasks.register("obfuscateBuildJar", ObfuscateBuildJarTask.class, obfuscateBuildJarTask -> {
-            obfuscateBuildJarTask.dependsOn(tasks.getByName("createObfuscationMappings"));
-            obfuscateBuildJarTask.dependsOn(tasks.getByName("build"));
-            obfuscateBuildJarTask.setGroup(PLUGIN_NAME);
+        tasks.register("createReobfuscationMappings", CreateReobfuscationMappingsTask.class, createReobfuscationMappingsTask -> {
+            createReobfuscationMappingsTask.setGroup(PLUGIN_NAME);
+        });
+
+        tasks.register("reobfuscateBuildJar", ReobfuscateBuildJarTask.class, reobfuscateBuildJarTask -> {
+            reobfuscateBuildJarTask.dependsOn(tasks.getByName("createReobfuscationMappings"));
+            reobfuscateBuildJarTask.dependsOn(tasks.getByName("build"));
+            reobfuscateBuildJarTask.setGroup(PLUGIN_NAME);
         });
 
         tasks.getByName("build").doLast(task -> {
             try {
-                ((CreateObfuscationMappingsTask) tasks.getByName("createObfuscationMappings")).createObfuscationMappings();
+                ((CreateReobfuscationMappingsTask) tasks.getByName("createReobfuscationMappings")).createReobfuscationMappings();
+                ((ReobfuscateBuildJarTask) tasks.getByName("reobfuscateBuildJar")).reobfuscateBuildJar();
             } catch (IOException e) {
                 project.getLogger().error("", e);
             }
-            ((ObfuscateBuildJarTask) tasks.getByName("obfuscateBuildJar")).obfuscateBuildJar();
         });
 
         try {
-            ((DownloadMinecraftTask) tasks.getByName("downloadMinecraft")).downloadClientJar();
+            ((DownloadMinecraftTask) tasks.getByName("downloadMinecraft")).downloadMinecraftJar();
             ((CreateMappingsTask) tasks.getByName("createMappings")).createMappings();
-            ((DeobfuscateMinecraftTask) tasks.getByName("deobfuscateMinecraft")).deobfuscateClientJar();
+            ((DeobfuscateMinecraftTask) tasks.getByName("deobfuscateMinecraft")).deobfuscateMinecraftJar();
         } catch (IOException | MappingParseException e) {
             project.getLogger().error("", e);
         }

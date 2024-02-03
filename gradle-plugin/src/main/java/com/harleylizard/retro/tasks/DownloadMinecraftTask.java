@@ -11,11 +11,8 @@ import java.nio.file.Files;
 
 public class DownloadMinecraftTask extends DefaultTask {
     @TaskAction
-    public void downloadClientJar() throws IOException {
+    public void downloadMinecraftJar() throws IOException {
         var path = RetroLoaderPlugin.getCache(getProject()).resolve("client.jar");
-        if (Files.exists(path)) {
-            return;
-        }
 
         var url = new URL("https://launcher.mojang.com/v1/objects/43db9b498cb67058d2e12d394e6507722e71bb45/client.jar");
         try (var inputStream = url.openStream(); var dataOutputStream = new DataOutputStream(Files.newOutputStream(path))) {

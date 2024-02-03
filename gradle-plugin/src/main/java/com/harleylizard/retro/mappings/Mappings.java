@@ -1,8 +1,9 @@
-package com.harleylizard.retro;
+package com.harleylizard.retro.mappings;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.harleylizard.retro.Resources;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,9 +12,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public record Mapping<T>(String name, Map<String, T> map) {
+public record Mappings<T>(String name, Map<String, T> map) {
 
-    public static Mapping<Mapping<String>> deserialize(String path) throws IOException {
+    public static Mappings<Mappings<String>> deserialize(String path) throws IOException {
         try (var reader = new BufferedReader(new InputStreamReader(Resources.getResource(path)))) {
             var gson = new GsonBuilder().create();
 
@@ -22,24 +23,24 @@ public record Mapping<T>(String name, Map<String, T> map) {
         }
     }
 
-    private static Mapping<Mapping<String>> deserialize(JsonElement json) {
+    private static Mappings<Mappings<String>> deserialize(JsonElement json) {
         var jsonObject = json.getAsJsonObject();
 
         var deobfuscated = jsonObject.getAsJsonObject("deobfuscated");
 
-        var map = new HashMap<String, Mapping<String>>(deobfuscated.size());
+        var map = new HashMap<String, Mappings<String>>(deobfuscated.size());
         for (var entry : deobfuscated.entrySet()) {
             map.put(entry.getKey(), deserializeEntry(entry.getValue()));
         }
 
         var namespace = jsonObject.getAsJsonPrimitive("namespace").getAsString();
-        return new Mapping<>(namespace, Collections.unmodifiableMap(map));
+        return new Mappings<>(namespace, Collections.unmodifiableMap(map));
     }
 
-    private static Mapping<String> deserializeEntry(JsonElement json) {
+    private static Mappings<String> deserializeEntry(JsonElement json) {
         if (json.isJsonPrimitive()) {
             var name = json.getAsJsonPrimitive().getAsString();
-            return new Mapping<>(name, Collections.emptyMap());
+            return new Mappings<>(name, Collections.emptyMap());
         }
 
         JsonObject jsonObject = json.getAsJsonObject();
@@ -53,6 +54,6 @@ public record Mapping<T>(String name, Map<String, T> map) {
         }
 
         var deobfuscated = jsonObject.getAsJsonPrimitive("deobfuscated").getAsString();
-        return new Mapping<>(deobfuscated, Collections.unmodifiableMap(map));
+        return new Mappings<>(deobfuscated, Collections.unmodifiableMap(map));
     }
 }

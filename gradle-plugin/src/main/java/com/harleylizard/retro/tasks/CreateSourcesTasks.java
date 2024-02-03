@@ -13,9 +13,9 @@ import org.gradle.api.tasks.TaskAction;
 
 import java.io.IOException;
 
-public class DeobfuscateMinecraftTask extends DefaultTask {
+public class CreateSourcesTasks extends DefaultTask {
     @TaskAction
-    public void deobfuscateMinecraftJar() throws IOException, MappingParseException {
+    public void createSources() throws IOException, MappingParseException {
         var enigma = Enigma.builder().build();
 
         var progressListener = new ProgressListener() {
@@ -36,10 +36,9 @@ public class DeobfuscateMinecraftTask extends DefaultTask {
         var mappings = MappingFormat.PROGUARD.read(mappingsPath, progressListener, enigma.getProfile().getMappingSaveParameters());
         enigmaProject.setMappings(mappings);
 
-        var deobfJarPath = cache.resolve("client-deobf.jar");
         var export = enigmaProject.exportRemappedJar(progressListener);
-        export.write(deobfJarPath, progressListener);
 
-        project.getDependencies().add("implementation", project.files(deobfJarPath));
+        var sourcesPath = cache.resolve("client-deobf-sources.jar");
+        export.decompile(progressListener, Decompilers.CFR, EnigmaProject.DecompileErrorStrategy.TRACE_AS_SOURCE).write(sourcesPath, progressListener);
     }
 }
