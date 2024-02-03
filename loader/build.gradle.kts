@@ -1,5 +1,6 @@
 plugins {
-    id("java")
+    `java-library`
+    `maven-publish`
 }
 
 group = "com.harleylizard"
@@ -12,11 +13,11 @@ repositories {
 }
 
 dependencies {
-    implementation(files("libraries/client.jar"))
+    api(files("libraries/client.jar"))
 
-    implementation("net.minecraft:launchwrapper:1.5")
-    implementation("com.google.code.gson:gson:2.10.1")
-    implementation("com.google.guava:guava:32.1.3-jre")
+    api("net.minecraft:launchwrapper:1.5")
+    api("com.google.code.gson:gson:2.10.1")
+    api("com.google.guava:guava:32.1.3-jre")
 
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
@@ -31,5 +32,19 @@ java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     toolchain {
         languageVersion = JavaLanguageVersion.of(8)
+    }
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            from(components["java"])
+            groupId = "com.harleylizard"
+            artifactId = "retro-loader"
+            version = "1.0-SNAPSHOT"
+        }
+    }
+    repositories {
+        mavenLocal()
     }
 }
